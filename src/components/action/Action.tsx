@@ -26,29 +26,35 @@ export const Actions: React.FC<ActionsProps> = ({
   disconnectConversation,
 }) => (
   <div className="content-actions">
-    <Toggle
-      defaultValue={false}
-      labels={['手動', 'VAD']}
-      values={['none', 'server_vad']}
-      onChange={(_, value) => changeTurnEndType(value)}
-    />
-    <div className="spacer" />
-    {isConnected && canPushToTalk && (
-      <Button
-        label={isRecording ? '送信(release)' : '会話(push)'}
-        buttonStyle={isRecording ? 'alert' : 'regular'}
-        disabled={!isConnected || !canPushToTalk}
-        onMouseDown={startRecording}
-        onMouseUp={stopRecording}
+    <div className="manual-button">
+      <Toggle
+        defaultValue={false}
+        labels={['手動', 'VAD']}
+        values={['none', 'server_vad']}
+        onChange={(_, value) => changeTurnEndType(value)}
       />
-    )}
-    <div className="spacer" />
-    <Button
-      label={isConnected ? '切断' : '接続'}
-      iconPosition={isConnected ? 'end' : 'start'}
-      icon={isConnected ? X : Zap}
-      buttonStyle={isConnected ? 'regular' : 'action'}
-      onClick={isConnected ? disconnectConversation : connectConversation}
-    />
+    </div>
+
+    <div className="conversation-button">
+      {isConnected && canPushToTalk && (
+        <Button
+          label={isRecording ? '送信(release)' : '会話(push)'}
+          buttonStyle={isRecording ? 'alert' : 'regular'}
+          disabled={!isConnected || !canPushToTalk}
+          onMouseDown={startRecording}
+          onMouseUp={stopRecording}
+        />
+      )}
+    </div>
+
+    <div className="vad-button">
+      <Button
+        label={isConnected ? '切断' : '接続'}
+        iconPosition={isConnected ? 'end' : 'start'}
+        icon={isConnected ? X : Zap}
+        buttonStyle={isConnected ? 'regular' : 'action'}
+        onClick={isConnected ? disconnectConversation : connectConversation}
+      />
+    </div>
   </div>
 );

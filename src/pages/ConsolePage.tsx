@@ -30,6 +30,11 @@ const LOCAL_RELAY_SERVER_URL: string =
   process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
 /**
+ * OpenAI APIキーを環境変数から取得
+ */
+const OPENAI_API_KEY: string = process.env.REACT_APP_OPENAI_API_KEY || '';
+
+/**
  * タイプ定義
  */
 interface RealtimeEvent {
@@ -80,16 +85,9 @@ interface ConversationItem extends Omit<FormattedItemType, 'audio' | 'tool'> {
 
 export function ConsolePage() {
   /**
-   * APIキーの要求
+   * APIキーの設定
    */
-  const apiKey = LOCAL_RELAY_SERVER_URL
-    ? ''
-    : localStorage.getItem('tmp::voice_api_key') ||
-      prompt('OpenAI APIキー') ||
-      '';
-  if (apiKey !== '') {
-    localStorage.setItem('tmp::voice_api_key', apiKey);
-  }
+  const apiKey = LOCAL_RELAY_SERVER_URL ? '' : OPENAI_API_KEY;
 
   /**
    * インスタンス化
@@ -153,18 +151,43 @@ export function ConsolePage() {
     };
     return `${pad(m)}:${pad(s)}.${pad(hs)}`;
   }, []);
-
-  /**
-   * APIキーをクリックした時
+/**
+   * 会話ログをCSVとしてエクスポート
    */
-  const resetAPIKey = useCallback(() => {
-    const apiKey = prompt('OpenAI APIキー');
-    if (apiKey !== null) {
-      localStorage.clear();
-      localStorage.setItem('tmp::voice_api_key', apiKey);
-      window.location.reload();
-    }
-  }, []);
+const exportConversationAsCSV = useCallback(() => {
+  // CSVヘッダー
+  const headers = ['時刻','話者', 'メッセージ'];
+  const csvRows = [headers];
+
+  // 会話ログをCSV行に変換
+  for (const item of items) {
+    const timestamp = new Date().toLocaleString();
+    const role = item.role === 'user' ? 'あなた' : 
+                 item.role === 'assistant' ? '顧客' : 
+                 'システム';
+    const message = item.formatted.text || item.formatted.transcript || '';
+    csvRows.push([timestamp, role, message]);
+  };
+
+  // CSV文字列を作成
+  const csvContent = csvRows.map(row => row.join(',')).join('\n');
+  
+  // BOMを付与してUTF-8でエンコード
+  const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+  const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8' });
+  
+  // ダウンロードリンクを作成
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `conversation_${new Date().toISOString()}.csv`;
+  
+  // ダウンロードを実行
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [items]);
 
   /**
    * 会話に接続
@@ -458,7 +481,7 @@ export function ConsolePage() {
     <div data-component="ConsolePage">
       <Header
         apiKey={apiKey}
-        resetAPIKey={resetAPIKey}
+        exportConversationAsCSV={exportConversationAsCSV}
         isLocalServer={!!LOCAL_RELAY_SERVER_URL}
       />
       <div className="content-main">

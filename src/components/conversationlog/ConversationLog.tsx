@@ -62,18 +62,20 @@ export const ConversationLog: React.FC<ConversationLogProps> = ({
           <div className="speaker-content">
             {/* ツールレスポンス */}
             {conversationItem.type === 'function_call_output' && (
-              <div>{conversationItem.formatted.output}</div>
+              <div className="message-content">
+                {conversationItem.formatted.output}
+              </div>
             )}
             {/* ツール呼び出し */}
             {!!conversationItem.formatted.tool && (
-              <div>
+              <div className="message-content">
                 {conversationItem.formatted.tool.name}(
                 {conversationItem.formatted.tool.arguments})
               </div>
             )}
             {/* 顧客の発言 */}
             {conversationItem.role === 'user' && (
-              <div>
+              <div className="message-content">
                 {conversationItem.formatted.transcript ||
                   conversationItem.formatted.text ||
                   '(書き出し中)'}
@@ -81,7 +83,7 @@ export const ConversationLog: React.FC<ConversationLogProps> = ({
             )}
             {/* 営業の発言 */}
             {conversationItem.role === 'assistant' && (
-              <div>
+              <div className="message-content">
                 {conversationItem.formatted.transcript ||
                   conversationItem.formatted.text ||
                   '(書き出し中)'}
@@ -94,6 +96,7 @@ export const ConversationLog: React.FC<ConversationLogProps> = ({
                 controls
                 autoPlay
                 muted
+                style={{ maxWidth: '100%' }}
               />
             )}
           </div>

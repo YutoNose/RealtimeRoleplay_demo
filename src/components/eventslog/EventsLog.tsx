@@ -43,7 +43,7 @@ export const EventsLog: React.FC<EventsLogProps> = ({
         <canvas ref={serverCanvasRef} />
       </div>
     </div>
-    <div className="content-block-title">イベント</div>
+    <div className="content-block-title">イベントログ(API 接続状況)</div>
     <div className="content-block-body" ref={eventsScrollRef}>
       {!realtimeEvents.length && '接続待ち...'}
       {realtimeEvents.map((realtimeEvent) => {
