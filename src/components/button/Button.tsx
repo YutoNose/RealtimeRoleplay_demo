@@ -1,7 +1,7 @@
-import React from 'react';
+import type React from 'react';
 import './Button.scss';
 
-import { Icon } from 'react-feather';
+import type { Icon } from 'react-feather';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
@@ -28,7 +28,7 @@ export function Button({
     classList.push(`icon-${iconColor}`);
   }
   if (iconFill) {
-    classList.push(`icon-fill`);
+    classList.push('icon-fill');
   }
   classList.push(`button-style-${buttonStyle}`);
 

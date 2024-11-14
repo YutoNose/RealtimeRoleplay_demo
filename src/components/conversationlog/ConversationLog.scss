@@ -1,0 +1,92 @@
+/* ConversationLog.scss */
+.conversation-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    width: 100%;
+  
+    .conversation-title {
+      flex-shrink: 0;
+      padding-top: 16px;
+      padding-bottom: 4px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  
+    .conversation-body {
+      color: #6e6e7f;
+      position: relative;
+      flex-grow: 1;
+      padding: 8px 0px;
+      padding-top: 4px;
+      line-height: 1.5em;
+      overflow: auto;
+    }
+  
+    .conversation-item {
+      position: relative;
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+  
+      &:not(:hover) .close {
+        display: none;
+      }
+  
+      .close {
+        position: absolute;
+        top: 0px;
+        right: -20px;
+        background: #aaa;
+        color: #fff;
+        display: flex;
+        border-radius: 16px;
+        padding: 2px;
+        cursor: pointer;
+        border: none;
+  
+        &:hover {
+          background: #696969;
+        }
+  
+        svg {
+          stroke-width: 3;
+          width: 12px;
+          height: 12px;
+        }
+      }
+  
+      .speaker {
+        position: relative;
+        text-align: left;
+        gap: 16px;
+        width: 80px;
+        flex-shrink: 0;
+        margin-right: 16px;
+  
+        &.salesperson {
+          color: #1e90ff;
+        }
+  
+        &.customer {
+          color: #32cd32;
+        }
+  
+        &.system {
+          color: #ff8c00;
+        }
+  
+        .role {
+          font-weight: bold;
+        }
+      }
+  
+      .speaker-content {
+        color: #18181b;
+        overflow: hidden;
+        word-wrap: break-word;
+      }
+    }
+  }
+  

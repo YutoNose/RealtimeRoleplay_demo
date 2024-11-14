@@ -65,20 +65,20 @@ export class RealtimeRelay {
 
     // Connect to OpenAI Realtime API
     try {
-      this.log(`Connecting to OpenAI...`);
+      this.log('Connecting to OpenAI...');
       await client.connect();
     } catch (e) {
       this.log(`Error connecting to OpenAI: ${e.message}`);
       ws.close();
       return;
     }
-    this.log(`Connected to OpenAI successfully!`);
+    this.log('Connected to OpenAI successfully!');
     while (messageQueue.length) {
       messageHandler(messageQueue.shift());
     }
   }
 
   log(...args) {
-    console.log(`[RealtimeRelay]`, ...args);
+    console.log('[RealtimeRelay]', ...args);
   }
 }

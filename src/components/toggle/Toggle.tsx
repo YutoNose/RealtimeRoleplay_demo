@@ -35,11 +35,11 @@ export function Toggle({
     const bgEl = bgRef.current;
     if (leftEl && rightEl && bgEl) {
       if (value) {
-        bgEl.style.left = rightEl.offsetLeft + 'px';
-        bgEl.style.width = rightEl.offsetWidth + 'px';
+        bgEl.style.left = `${rightEl.offsetLeft}px`;
+        bgEl.style.width = `${rightEl.offsetWidth}px`;
       } else {
         bgEl.style.left = '';
-        bgEl.style.width = leftEl.offsetWidth + 'px';
+        bgEl.style.width = `${leftEl.offsetWidth}px`;
       }
     }
   }, [value]);
@@ -49,6 +49,7 @@ export function Toggle({
       data-component="Toggle"
       onClick={toggleValue}
       data-enabled={value.toString()}
+      onKeyDown={toggleValue}
     >
       {labels && (
         <div className="label left" ref={leftRef}>
@@ -60,7 +61,7 @@ export function Toggle({
           {labels[1]}
         </div>
       )}
-      <div className="toggle-background" ref={bgRef}></div>
+      <div className="toggle-background" ref={bgRef} />
     </div>
   );
 }

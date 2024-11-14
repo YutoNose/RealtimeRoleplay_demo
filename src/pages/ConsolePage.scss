@@ -1,20 +1,13 @@
 [data-component='ConsolePage'] {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   font-family: 'Roboto Mono', monospace;
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
   margin: 0px 8px;
-  & > div {
-    flex-shrink: 0;
-  }
-
-  .spacer {
-    flex-grow: 1;
-  }
 
   .content-top {
     display: flex;
@@ -30,118 +23,56 @@
         width: 24px;
         height: 24px;
       }
+
     }
   }
 
   .content-main {
-    flex-grow: 1;
-    flex-shrink: 1 !important;
-    margin: 0px 16px;
+    flex: 1;
     display: flex;
-    overflow: hidden;
+    flex-direction: row;
+    margin: 0px 16px;
     margin-bottom: 24px;
-    .content-block {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      max-height: 100%;
-      width: 100%;
-      .content-block-title {
-        flex-shrink: 0;
-        padding-top: 16px;
-        padding-bottom: 4px;
-        position: relative;
-      }
-      .content-block-body {
-        color: #6e6e7f;
-        position: relative;
-        flex-grow: 1;
-        padding: 8px 0px;
-        padding-top: 4px;
-        line-height: 1.2em;
-        overflow: auto;
-        &.full {
-          padding: 0px;
-        }
-      }
+
+    .left-half {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 12px;
     }
-    .content-right {
-      width: 300px;
-      flex-shrink: 0;
+
+    .right-half {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      margin-left: 24px;
-      gap: 24px;
-      & > div {
+
+      .top-half {
+        height: 500px; // 固定の高さを設定
+        min-height: 500px; // 最小の高さも設定
+        max-height: 500px; // 最大の高さも設定
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
         border-radius: 16px;
-        flex-grow: 1;
-        flex-shrink: 0;
-        overflow: hidden;
-        position: relative;
-        .content-block-title {
-          position: absolute;
+        .human-face {
+          width: 400px;
+          height: 300px;
           display: flex;
-          align-items: center;
           justify-content: center;
-          line-height: 2em;
-          top: 16px;
-          left: 16px;
-          padding: 4px 16px;
-          background-color: #fff;
-          border-radius: 1000px;
-          min-height: 32px;
-          z-index: 9999;
-          text-align: center;
-          white-space: pre;
-          &.bottom {
-            top: auto;
-            bottom: 16px;
-            right: 16px;
+          align-items: center;
+
+          img {
+            object-fit: fill;
           }
         }
       }
-      & > div.kv {
-        height: 250px;
-        max-height: 250px;
-        white-space: pre;
-        background-color: #ececf1;
-        .content-block-body {
-          padding: 16px;
-          margin-top: 56px;
-        }
-      }
-    }
-    .content-logs {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      & > div {
-        flex-grow: 1;
-      }
-      & > .content-actions {
-        flex-grow: 0;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-      }
-      & > div.events {
-        overflow: hidden;
-      }
-      .events {
-        border-top: 1px solid #e7e7e7;
-      }
-      .conversation {
-        display: flex;
-        flex-shrink: 0;
-        width: 100%;
-        overflow: hidden;
-        height: 200px;
-        min-height: 0;
-        max-height: 200px;
-        border-top: 1px solid #e7e7e7;
+
+      .bottom-half {
+        flex: 1;
+        overflow-y: auto;
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 16px;
       }
     }
   }
