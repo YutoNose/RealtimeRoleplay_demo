@@ -3,6 +3,7 @@ import { ConsolePage } from './pages/ConsolePage';
 import './App.scss';
 
 import { LoginPage } from './pages/LoginPage';
+import { Toaster } from 'react-hot-toast';
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -15,6 +16,7 @@ const AppRoutes = () => {
 
 const App = () => (
   <BrowserRouter>
+    <Toaster />
     <AppRoutes />
   </BrowserRouter>
 );

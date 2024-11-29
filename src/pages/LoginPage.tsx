@@ -31,7 +31,7 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="login-page">
       <h1>ログイン</h1>
-      <form onSubmit={handleLogin}>
+      <form className="form" onSubmit={handleLogin}>
         <div className="form-group">
           <label htmlFor="email">メールアドレス</label>
           <input

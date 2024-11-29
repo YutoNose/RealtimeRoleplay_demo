@@ -1,46 +1,84 @@
+ // Start of Selection
 .login-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.login-page h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-  width: 100%;
-  max-width: 400px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button[type="submit"] {
-  padding: 0.75rem 1.5rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto; /* カードの高さを自動にします */
+    width: 95vw; /* カードの幅を画面の95%にします */
+    max-width: 600px; /* カードの最大幅を設定します */
+    background-color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    padding: 2rem; /* カードの内側の余白を増やします */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* カードに影をつけます */
+    border-radius: 12px;
+    position: relative; 
+    margin: 5vh auto; /* カードを中央に配置します */
+    text-align: center; /* 全体のテキストを中央揃えにします */
+  }
+  
+  .login-page h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  .form{
+    width: 70%;
+    max-width: 900px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 900px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+    text-align: left;
+  }
+  
+  .form-group input {
+    width: 100%;
+    /* max-widthを削除して、inputの横幅を100%にします */
+    padding: 0.75rem;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box; /* ボックスサイズの余白を調整します */
+  }
+  
+  .form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  button[type="submit"] {
+    padding: 0.5rem 1.5rem;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 62.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #444444;
+    transform: translateY(-2px);
+  }
+  
+  button[type="submit"]:active {
+    background-color: #222222;
+    transform: translateY(0);
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 1rem;
+  }
