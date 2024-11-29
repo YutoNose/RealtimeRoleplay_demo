@@ -38,7 +38,7 @@ export const ConversationLog: React.FC<ConversationLogProps> = ({
   deleteConversationItem,
 }) => (
   <div className="conversation-block">
-    <div className="conversation-title">営業ロールプレイング</div>
+    <div className="conversation-title">リアルタイムAPI会話ログ</div>
     <div className="conversation-body" data-conversation-content>
       {!items.length && '接続待ち...'}
       {items.map((conversationItem) => (
