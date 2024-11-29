@@ -6,13 +6,14 @@ import type {
   FormattedToolType,
 } from '@openai/realtime-api-beta/dist/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js';
-import { instructions } from '../utils/conversation_config.js';
 import { WavRenderer } from '../utils/wav_renderer';
+import { supabase } from '../lib/supabase/supabaseclient'; // supabaseclientをインポート
 
 import { Header } from '../components/header/Header';
 import { EventsLog } from '../components/eventslog/EventsLog';
 import { ConversationLog } from '../components/conversationlog/ConversationLog';
 import { Actions } from '../components/action/Action';
+import { InstructionModal } from '../components/instructionmodal/InstructionModal'; // InstructionModalをインポート
 
 import './ConsolePage.scss';
 
@@ -83,6 +84,37 @@ interface ConversationItem extends Omit<FormattedItemType, 'audio' | 'tool'> {
   status?: 'completed' | 'pending' | 'failed';
 }
 
+export async function getInstructions() {
+  const { data: userSession, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userSession) {
+    console.error('User not logged in:', userError?.message);
+    throw new Error('User not logged in');
+  }
+
+  const userId = userSession.user.id; // ログイン中のユーザーのID
+  console.log('Logged-in user ID:', userId);
+
+  const { data, error } = await supabase
+    .from('instructions')
+    .select('instruction')
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error('Error fetching instructions:', error.message);
+    throw error;
+  }
+
+  if (!data || data.length === 0) {
+    console.warn('No instructions found for the user.');
+    return null;
+  }
+
+  console.log('Fetched instructions:', data);
+  return data[0].instruction;
+}
+
+
 export function ConsolePage() {
   /**
    * APIキーの設定
@@ -130,6 +162,8 @@ export function ConsolePage() {
   const [canPushToTalk, setCanPushToTalk] = useState(true);
   const [isRecording, setIsRecording] = useState(false);
   const [memoryKv, setMemoryKv] = useState<{ [key: string]: string }>({});
+  const [isInstructionModalOpen, setIsInstructionModalOpen] = useState(false); // InstructionModalの状態変数を追加
+  const [instruction, setInstruction] = useState<string | null>(null); // Instructionの状態変数を追加
 
   /**
    * ログのタイミングをフォーマットするユーティリティ
@@ -399,7 +433,10 @@ const exportConversationAsCSV = useCallback(() => {
     const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
-    client.updateSession({ instructions: instructions });
+    getInstructions().then((instructions) => {
+      client.updateSession({ instructions: instructions });
+      setInstruction(instructions); // Instructionの状態を設定
+    });
     client.updateSession({ input_audio_transcription: { model: 'whisper-1' } });
 
     client.addTool(
@@ -477,12 +514,25 @@ const exportConversationAsCSV = useCallback(() => {
     };
   }, []);
 
+  // ユーザーの認証状態を確認
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        // ログインしていない場合はリダイレクト
+        window.location.href = '/login';
+      }
+    };
+    checkUser();
+  }, []);
+
   return (
     <div data-component="ConsolePage">
       <Header
         apiKey={apiKey}
         exportConversationAsCSV={exportConversationAsCSV}
         isLocalServer={!!LOCAL_RELAY_SERVER_URL}
+        setIsInstructionModalOpen={setIsInstructionModalOpen}
       />
       <div className="content-main">
         <div className="left-half">
@@ -523,6 +573,12 @@ const exportConversationAsCSV = useCallback(() => {
         changeTurnEndType={changeTurnEndType}
         connectConversation={connectConversation}
         disconnectConversation={disconnectConversation}
+        setIsInstructionModalOpen={setIsInstructionModalOpen}
+      />
+      <InstructionModal
+        isOpen={isInstructionModalOpen}
+        onClose={() => setIsInstructionModalOpen(false)}
+        instruction={instruction}
       />
     </div>
   );

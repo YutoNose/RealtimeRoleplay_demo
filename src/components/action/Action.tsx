@@ -13,6 +13,7 @@ interface ActionsProps {
   changeTurnEndType: (value: string) => void;
   connectConversation: () => void;
   disconnectConversation: () => void;
+  setIsInstructionModalOpen: (value: boolean) => void;
 }
 
 export const Actions: React.FC<ActionsProps> = ({
@@ -24,6 +25,7 @@ export const Actions: React.FC<ActionsProps> = ({
   changeTurnEndType,
   connectConversation,
   disconnectConversation,
+  setIsInstructionModalOpen,
 }) => (
   <div className="content-actions">
     <div className="manual-button">
