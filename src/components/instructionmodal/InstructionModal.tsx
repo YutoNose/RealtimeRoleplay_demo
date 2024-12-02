@@ -31,8 +31,9 @@ export const InstructionModal: React.FC<InstructionModalProps> = ({
       return;
     }
 
+    console.log('editInstruction', editInstruction);
     const userId = userSession.user.id;
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('instructions')
       .update({ instruction: editInstruction })
       .eq('user_id', userId);
