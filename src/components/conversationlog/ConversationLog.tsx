@@ -46,10 +46,10 @@ export const ConversationLog: React.FC<ConversationLogProps> = ({
           <div className={`speaker ${conversationItem.role || ''}`}>
             <div className="role">
               {conversationItem.role === 'user'
-                ? '営業'
+                ? 'User'
                 : conversationItem.role === 'assistant'
-                ? '顧客'
-                : 'システム'}
+                ? 'AI'
+                : 'System'}
             </div>
             <button
               className="close"
