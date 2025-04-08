@@ -318,7 +318,11 @@ const exportConversationAsCSV = useCallback(() => {
       await wavRecorder.pause();
     }
     client.updateSession({
-      turn_detection: value === 'none' ? null : { type: 'server_vad' },
+      model: 'gpt-4o-realtime-preview-2024-12-17',
+      input_audio_transcription: {
+        model: 'whisper-1'
+      },
+      voice: 'alloy',
     });
     if (value === 'server_vad' && client.isConnected()) {
       await wavRecorder.record((data) => client.appendInputAudio(data.mono));
@@ -437,7 +441,10 @@ const exportConversationAsCSV = useCallback(() => {
       client.updateSession({ instructions: instructions });
       setInstruction(instructions); // Instructionの状態を設定
     });
-    client.updateSession({ input_audio_transcription: { model: 'whisper-1' } });
+    client.updateSession({ 
+      input_audio_transcription: { model: 'whisper-1' },
+      model: 'gpt-4o-realtime-preview-2024-12-17',
+    });
 
     client.addTool(
       {
@@ -493,7 +500,9 @@ const exportConversationAsCSV = useCallback(() => {
       async ({ item, delta }: ConversationUpdateEvent) => {
         const items = client.conversation.getItems() as ConversationItem[];
         if (delta?.audio) {
-          wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+          // Uint8ArrayをInt16Arrayに変換
+          const int16Array = new Int16Array(delta.audio.buffer);
+          wavStreamPlayer.add16BitPCM(int16Array, item.id);
         }
         if (item.status === 'completed' && item.formatted.audio?.length) {
           const wavFile = await WavRecorder.decode(
